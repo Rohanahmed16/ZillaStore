@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body data-admin-page="users">
+    <div class="admin-mobile-header">
+        <button id="toggle-admin-sidebar" class="toggle-sidebar">☰</button>
+        <span style="font-weight:700">Manage Users</span><span></span>
+    </div>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="brand">
+                <h2><span>ZILLA</span> Admin</h2><small>Store Management</small>
+            </div>
+            <nav>
+                <a href="/admin/dashboard"><span class="icon">📊</span> Dashboard</a>
+                <a href="/admin/products"><span class="icon">📦</span> Products</a>
+                <a href="/admin/categories"><span class="icon">🏷️</span> Categories</a>
+                <a href="/admin/offers"><span class="icon">🎫</span> Offers</a>
+                <a href="/admin/orders"><span class="icon">🛒</span> Orders</a>
+                <a href="/admin/users" class="active"><span class="icon">👥</span> Users</a>
+                <a href="/admin/settings"><span class="icon">⚙️</span> Settings</a>
+            </nav>
+            <button class="logout-btn" id="admin-logout">Sign Out</button>
+        </aside>
+
+        <main class="admin-main">
+            <h1>Admin Users</h1>
+            <p class="subtitle">Create and manage your team of administrators</p>
+
+            <div class="admin-form mb-32">
+                <h3 id="user-form-title" style="margin-bottom:20px">Add New Admin User</h3>
+                <form id="user-form">
+                    <input type="hidden" id="user-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="user-username">Username</label>
+                            <input type="text" id="user-username" placeholder="e.g. rohan_zilla" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-password">Password</label>
+                            <input type="password" id="user-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:8px">
+                        <button type="submit" class="btn btn-primary">Save User</button>
+                        <button type="button" class="btn btn-outline" id="cancel-user">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="admin-table-wrap">
+                <div class="admin-table-header">
+                    <h3>All Administrators</h3>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-list">
+                        <tr>
+                            <td colspan="4" class="text-center text-light" style="padding:24px">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

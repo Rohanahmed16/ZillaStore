@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product — ZILLA Store</title>
+    <meta name="description" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <header class="site-header" id="site-header"></header>
+
+    <div class="container">
+        <div class="product-detail" id="product-detail">
+            <!-- Left: Gallery -->
+            <div id="product-gallery">
+                <div class="skeleton" style="width:100%;aspect-ratio:1/1"></div>
+            </div>
+            <!-- Right: Info -->
+            <div class="product-info" id="product-info">
+                <div class="skeleton" style="height:32px;width:60%;margin-bottom:12px"></div>
+                <div class="skeleton" style="height:20px;width:40%;margin-bottom:24px"></div>
+                <div class="skeleton" style="height:24px;width:30%;margin-bottom:24px"></div>
+                <div class="skeleton" style="height:80px;width:100%;margin-bottom:24px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <section style="padding:48px 0 80px">
+        <div class="container">
+            <div class="section-header">
+                <h2>You May Also Like</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="product-grid" id="related-grid"></div>
+        </div>
+    </section>
+
+    <footer class="site-footer" id="site-footer"></footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Extract product ID from URL: /product/123
+            const pathParts = window.location.pathname.split('/');
+            const productId = pathParts[pathParts.length - 1];
+            if (!productId) return;
+
+            try {
+                const p = await api.getProduct(productId);
+                const img = productImage(p.image);
+
+                // Gallery
+                document.getElementById('product-gallery').innerHTML = `
+          <img class="gallery-main" id="main-img" src="${img}" alt="${p.name}">
+          <div class="gallery-thumbs">
+            <img src="${img}" alt="Thumbnail" class="active" onclick="document.getElementById('main-img').src=this.src; document.querySelectorAll('.gallery-thumbs img').forEach(i=>i.classList.remove('active')); this.classList.add('active');">
+          </div>`;
+
+                // Info
+                const priceHtml = p.discount_amount > 0
+                    ? `<span class="current-price" style="color:var(--danger)">${formatPrice(p.discounted_price)}</span>
+             <span class="original-price">${formatPrice(p.price)}</span>`
+                    : `<span class="current-price">${formatPrice(p.price)}</span>`;
+
+                const badgeHtml = p.offer_badge
+                    ? `<span class="product-badge">${p.offer_badge} — ${p.offer_name}</span>` : '';
+
+                document.getElementById('product-info').innerHTML = `
+          <div class="breadcrumb">
+            <a href="/${p.section_name ? p.section_name.toLowerCase() : 'products'}">${p.section_name || 'Shop'}</a>
+            ${p.subcategory_name ? ' / ' + p.subcategory_name : ''} / ${p.name}
+          </div>
+          <h1>${p.name}</h1>
+          ${badgeHtml}
+          <div class="price-block">${priceHtml}</div>
+          <p class="description">${p.description}</p>
+          <div class="add-to-cart-row">
+            <div class="qty-selector">
+              <button id="qty-minus">−</button>
+              <input type="number" id="qty-input" value="1" min="1" max="${p.stock}" readonly>
+              <button id="qty-plus">+</button>
+            </div>
+            <button class="btn btn-primary" id="add-to-cart">Add to Cart</button>
+          </div>
+          <p class="text-light mt-16" style="font-size:0.875rem">${p.stock > 0 ? p.stock + ' in stock' : 'Out of stock'}</p>`;
+
+                // Quantity controls
+                const qtyInput = document.getElementById('qty-input');
+                document.getElementById('qty-minus').addEventListener('click', () => {
+                    if (parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
+                });
+                document.getElementById('qty-plus').addEventListener('click', () => {
+                    if (parseInt(qtyInput.value) < p.stock) qtyInput.value = parseInt(qtyInput.value) + 1;
+                });
+
+                // Add to cart
+                document.getElementById('add-to-cart').addEventListener('click', async () => {
+                    try {
+                        await api.addToCart(p.id, parseInt(qtyInput.value));
+                        showToast('Added to cart!');
+                        updateCartBadge();
+                    } catch (e) { showToast('Failed to add to cart', 'error'); }
+                });
+
+                // Related products
+                const relGrid = document.getElementById('related-grid');
+                if (p.related && p.related.length > 0) {
+                    relGrid.innerHTML = p.related.map(r => productCardHTML(r)).join('');
+                } else {
+                    relGrid.innerHTML = '<p class="text-center text-light" style="grid-column:1/-1">No related products found.</p>';
+                }
+
+                // SEO
+                updateSEO({
+                    title: p.name,
+                    description: p.description.substring(0, 160),
+                    image: window.location.origin + (img.startsWith('/') ? img : '/' + img),
+                });
+
+            } catch (e) {
+                document.getElementById('product-detail').innerHTML =
+                    '<p class="text-center text-light mt-48" style="grid-column:1/-1">Product not found.</p>';
+                console.error(e);
+            }
+        });
+    </script>
+</body>
+
+</html>
