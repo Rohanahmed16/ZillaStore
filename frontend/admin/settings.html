@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body data-admin-page="settings">
+    <div class="admin-mobile-header">
+        <button id="toggle-admin-sidebar" class="toggle-sidebar">☰</button>
+        <span style="font-weight:700">Settings</span><span></span>
+    </div>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="brand">
+                <h2><span>ZILLA</span> Admin</h2><small>Store Management</small>
+            </div>
+            <nav>
+                <a href="/admin/dashboard"><span class="icon">📊</span> Dashboard</a>
+                <a href="/admin/products"><span class="icon">📦</span> Products</a>
+                <a href="/admin/categories"><span class="icon">🏷️</span> Categories</a>
+                <a href="/admin/offers"><span class="icon">🎫</span> Offers</a>
+                <a href="/admin/orders"><span class="icon">🛒</span> Orders</a>
+                <a href="/admin/users"><span class="icon">👥</span> Users</a>
+                <a href="/admin/settings" class="active"><span class="icon">⚙️</span> Settings</a>
+            </nav>
+            <button class="logout-btn" id="admin-logout">Sign Out</button>
+        </aside>
+
+        <main class="admin-main">
+            <h1>Site Settings</h1>
+            <p class="subtitle">Customize your store's branding and appearance</p>
+
+            <form id="settings-form">
+                <div class="admin-form mb-32">
+                    <h3 style="margin-bottom:20px">Store Identity</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="set-name">Store Name</label>
+                            <input type="text" id="set-name" placeholder="ZILLA Store">
+                        </div>
+                        <div class="form-group">
+                            <label for="set-tagline">Tagline</label>
+                            <input type="text" id="set-tagline" placeholder="Premium Products for You">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="set-currency">Store Currency</label>
+                            <select id="set-currency">
+                                <option value="$">US Dollar ($)</option>
+                                <option value="₹">Indian Rupee (₹)</option>
+                                <option value="Rs.">Pakistani Rupee (Rs.)</option>
+                                <option value="¥">Japanese Yen / Yuan (¥)</option>
+                                <option value="€">Euro (€)</option>
+                                <option value="£">British Pound (£)</option>
+                                <option value="৳">Bangladeshi Taka (৳)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <!-- spacer -->
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="set-logo">Logo Upload</label>
+                            <input type="file" id="set-logo" accept="image/*">
+                            <div class="img-preview" id="logo-preview">No logo</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="set-favicon">Favicon Upload</label>
+                            <input type="file" id="set-favicon" accept="image/*">
+                            <div class="img-preview" id="fav-preview">No favicon</div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:20px">
+                        <label for="set-seo">Search Engine Keywords (SEO)</label>
+                        <textarea id="set-seo" rows="3"
+                            placeholder="Zilla store, store, zilla, online store..."></textarea>
+                    </div>
+                </div>
+
+                <div class="admin-form mb-32">
+                    <h3 style="margin-bottom:20px">Color Theme</h3>
+                    <div class="color-picker-row">
+                        <div class="color-picker-group">
+                            <label for="set-primary">Primary Color</label>
+                            <input type="color" id="set-primary" value="#F5C518">
+                            <div class="color-val">#F5C518</div>
+                        </div>
+                        <div class="color-picker-group">
+                            <label for="set-secondary">Secondary Color</label>
+                            <input type="color" id="set-secondary" value="#1a1a1a">
+                            <div class="color-val">#1a1a1a</div>
+                        </div>
+                        <div class="color-picker-group">
+                            <label for="set-bg">Background</label>
+                            <input type="color" id="set-bg" value="#ffffff">
+                            <div class="color-val">#ffffff</div>
+                        </div>
+                        <div class="color-picker-group">
+                            <label for="set-text">Text Color</label>
+                            <input type="color" id="set-text" value="#1a1a1a">
+                            <div class="color-val">#1a1a1a</div>
+                        </div>
+                    </div>
+                    <div class="preview-bar" id="preview-bar">
+                        <span>Live Preview:</span>
+                        <span class="preview-accent"
+                            style="display:inline-block;width:24px;height:24px;border-radius:4px;background:var(--primary)"></span>
+                        <span>Sample text in your chosen colors</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+            </form>
+        </main>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>
