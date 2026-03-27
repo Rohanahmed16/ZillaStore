@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
-  <rect width="400" height="400" fill="#f2f2f2"/>
-  <text x="200" y="200" text-anchor="middle" dominant-baseline="central" font-family="Inter, sans-serif" font-size="16" font-weight="600" fill="#999">No Image</text>
-  <path d="M175 170 L200 150 L225 170 L250 195 L150 195 Z" fill="#ddd"/>
-  <circle cx="235" cy="155" r="10" fill="#ddd"/>
-</svg>
